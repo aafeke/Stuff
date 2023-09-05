@@ -6,7 +6,7 @@ class uptr {
     T* ptr_;
 
 public:
-    uptr(T* ptr) : ptr_(ptr) {}
+    uptr(T* ptr = nullptr) : ptr_(ptr) {}
     
     ~uptr() { delete ptr_; }
     
@@ -35,7 +35,7 @@ public:
 };
 
 template <typename T>
-uptr<T> make_unique(T* ptr) {
+uptr<T> make_unique(T* ptr = nullptr) {
     return uptr<T>(ptr);
 }
 
@@ -69,9 +69,8 @@ int main() {
         auto ptr  = make_unique<Object>(new Object(3));
         auto ptr2 = make_unique<Object>(5);
         auto ptr3 = std::move(ptr2);    // move constructor
-        uptr<Object> ptr4(0);
+        uptr<Object> ptr4;
         ptr4 = std::move(ptr3);         // move assignment operator.
-                                        // the initial object ptr4 held leaked.
 
         std::cout << "Access test: ptr->member_  = " << ptr->member_ << "\n";
         // std::cout << "Access test: ptr->member_  = " << ptr2->member_ << "\n";  // Dereferencing nullptr.
